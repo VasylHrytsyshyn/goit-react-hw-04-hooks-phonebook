@@ -1,0 +1,17 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #000;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.label {
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+.button {
+    max-width: 150px;
+}
