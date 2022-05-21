@@ -5,6 +5,8 @@ import { ContactForm } from './ContactForm';
 import { ContactList } from './ContactList';
 import { Filter } from './Filter';
 
+const CONTACTS = 'contacts';
+
 export class App extends Component{
   state = {
     contacts: [
@@ -23,8 +25,7 @@ export class App extends Component{
       number
     }
     const noUniqueName = this.state.contacts
-      .map(event => event.name.toLowerCase())
-      .includes(name.toLowerCase());
+      .find(contact => contact.name.toLowerCase() === name.toLowerCase())
 
     if (noUniqueName) {
       return alert(`${name} is already in contacts`);
@@ -54,6 +55,18 @@ export class App extends Component{
       };
     });
   };
+
+  componentDidMount() {
+    const dataFromLocalStorage = localStorage.getItem(CONTACTS);
+    const contactFromLocalStorage = JSON.parse(dataFromLocalStorage);
+    if (contactFromLocalStorage) { this.setState({ contacts: contactFromLocalStorage }) };
+  };
+
+  componentDidUpdate(prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem(CONTACTS, JSON.stringify(this.state.contacts));
+    }
+  }
 
   render() {
 
