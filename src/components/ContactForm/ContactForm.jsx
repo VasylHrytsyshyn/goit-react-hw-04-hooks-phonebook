@@ -1,35 +1,41 @@
-import { Component } from "react";
+import { useState } from "react";
 import PropTypes from 'prop-types';
 import styles from './ContactForm.module.css'
 
-export class ContactForm extends Component {
-    state = {
-        name: '',
-        number: '',    
-    };
+export const ContactForm = ({onSubmit}) => {
+    const [name, setName] = useState('');
+    const [number, setNamber] = useState('');
 
-    handleChange = e => {
+    const handleChange = e => {
         const { name, value } = e.currentTarget;
-        this.setState({ [name]: value });
+
+        if (name === "name") {
+            setName(value);
+        };
+        if (name === "number") {
+            setNamber(value);
+        };
     };
-    handleSubmit = e => {
+
+    const handleSubmit = e => {
         e.preventDefault();
-        this.props.onSubmit(this.state);
-        this.reset();
+        onSubmit(name, number);
+        reset();
     };
-    reset = () => {
-        this.setState({ name: '', number: '' });
+
+    const reset = () => {
+        setName('');
+        setNamber('');
+        // this.setState({ name: '', number: '' });
     };    
-
-
-    render() {
+   
         return (
-            <form className={styles.form} onSubmit={this.handleSubmit}>
+            <form className={styles.form} onSubmit={handleSubmit}>
                 <label className={styles.label}>
                     Name
                     <input
-                        onChange={this.handleChange}
-                        value={this.state.name}
+                        onChange={handleChange}
+                        value={name}
                         type="text"
                         name="name"
                         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -40,8 +46,8 @@ export class ContactForm extends Component {
                 <label className={styles.label}>
                     Number
                     <input
-                        onChange={this.handleChange}
-                        value={this.state.number}
+                        onChange={handleChange}
+                        value={number}
                         type="tel"
                         name="number"
                         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -54,7 +60,7 @@ export class ContactForm extends Component {
                 </button>
             </form>
         );
-    };
+    
 };
 
 ContactForm.propTypes = {
